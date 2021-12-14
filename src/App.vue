@@ -8,8 +8,8 @@
 
 <script>
 import Chat from '@/views/Chat.vue'
-import { login } from '@/firebase/init.js'
-　
+import { login } from '@/fb/init.js'
+
 export default {
   name: 'App',
   components: {
@@ -17,16 +17,21 @@ export default {
   },
   data() {
     return {
-      user: {}
+      user: {},
     }
   },
   methods: {
     async login() {
       const result = await login()
       this.user = result.user
-    }
-  }
-};
+    },
+    login2() {
+      login().then((result) => {
+        this.user = result.user
+      })
+    },
+  },
+}
 </script>
 
 <style lang="sass" scoped>

@@ -24,3 +24,5 @@ pnpm-debug.log*
 
 #Firebase関連
 .firebaseConfig.js
+.firebase
+.firebaserc

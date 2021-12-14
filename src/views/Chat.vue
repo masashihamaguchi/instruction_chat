@@ -4,7 +4,7 @@
             <h1>Instruction Chat</h1>
         </header>
         <div class="message">
-            <div class="message__container">
+            <div class="message__container" ref="container">
                 <Message 
                     class="message__component" 
                     v-for="message in messages"
@@ -19,8 +19,13 @@
         </div>
         <div class="form">
             <div class="form__container">
-                <textarea class="form__textarea"/>
-                <button class="form__submit">送信する</button>
+                <textarea 
+                    class="form__textarea" 
+                    v-model="inputText" 
+                    placeholder="メッセージを入力.."
+                    @keyup="keyup"
+                    />
+                <button class="form__submit" @click="submit">送信する</button>
             </div>
         </div>
     </div>
@@ -28,6 +33,7 @@
 
 <script>
 import Message from '../components/Message.vue'
+import { postMessage , setMessageListener } from '@/fb/api.js'
 
 export default {
     name: 'Chat',
@@ -39,34 +45,43 @@ export default {
     },
     data(){
         return {
-            messages: [
-                {
-                id: 0,
-                content:
-                    '山路を登りながら',
-                displayName: 'Taro Tanaka',
-                timestamp: new Date(Date.now()),
-                icon: 'https://scrapbox.io/files/606ad0fc182e900022459f97.jpg',
-                isMine: true,
-                },{
-                id: 2,
-                content:
-                    '山路を登りながら',
-                displayName: 'Taro Tanaka',
-                timestamp: new Date(Date.now()),
-                icon: 'https://scrapbox.io/files/606ad0fc182e900022459f97.jpg',
-                isMine: false,
-                },{
-                id: 3,
-                content:
-                    '山路を登りながら',
-                displayName: 'Taro Tanaka',
-                timestamp: new Date(Date.now()),
-                icon: 'https://scrapbox.io/files/606ad0fc182e900022459f97.jpg',
-                isMine: true,
-                }
-            ]
+            inputText: '',  
+            messages: [],
         }
+    },
+    methods: {
+        submit() {
+            if(this.inputText === '') return
+            postMessage(this.user, this.inputText)
+            this.inputText = ''
+        },
+        added(message) {
+            this.checkSender(message)
+            this.messages.push(message)
+            this.$nextTick(() => {
+                    const elm = this.$refs.container
+                    window.scrollTo({
+                        top: elm.clientHeight,
+                        left: 0,
+                        behavior: 'smooth' ,
+                    })
+            })
+        },
+        checkSender(message) {
+            if(message.uid === this.user.uid){
+                message.isMine = true
+            } else {
+                message.isMine = false
+            }
+        },
+        keyup(e) {
+            if(e.keyCode === 13 && e.ctrlKey) {
+                this.submit()
+            }
+        }
+    },
+    created() {
+        setMessageListener(this.added)
     }
 }
 </script>

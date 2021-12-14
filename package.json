@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "firebase": "^9.5.0",
+    "fb": "^2.0.0",
+    "firebase": "^9.6.1",
     "vue": "^3.0.0"
   },
   "devDependencies": {

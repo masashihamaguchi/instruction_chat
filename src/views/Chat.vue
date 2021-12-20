@@ -5,16 +5,20 @@
         </header>
         <div class="message">
             <div class="message__container" ref="container">
-                <Message 
-                    class="message__component" 
-                    v-for="message in messages"
-                    :key="message.id"
-                    :content="message.content"
-                    :icon="message.icon"
-                    :timestamp="message.timestamp"
-                    :displayName="message.displayname"
-                    :isMine="message.isMine"
-                    />
+                <transition-group name="message" tag="div">
+                    <Message 
+                        class="message__component" 
+                        v-for="message in messages"
+                        :key="message.id"
+                        :content="message.content"
+                        :icon="message.icon"
+                        :timestamp="message.timestamp"
+                        :displayName="message.displayname"
+                        :isMine="message.isMine"
+                        @deleteMessage="deleteMessage(message.id)"
+                        @editMessage="editMessage(message.id)"
+                    /> 
+                </transition-group>
             </div>
         </div>
         <div class="form">
@@ -33,7 +37,7 @@
 
 <script>
 import Message from '../components/Message.vue'
-import { postMessage , setMessageListener } from '@/fb/api.js'
+import { postMessage , deleteMessage, updateMessage, setMessageListener } from '@/fb/api.js'
 
 export default {
     name: 'Chat',
@@ -47,17 +51,26 @@ export default {
         return {
             inputText: '',  
             messages: [],
+            isEditMode: false,
+            editTarget: '',
         }
     },
     methods: {
         submit() {
             if(this.inputText === '') return
-            postMessage(this.user, this.inputText)
+            if(this.isEditMode) {
+                updateMessage(this.editTarget, this.inputText)
+                this.isEditMode = false
+                this.editTarget = ''
+            } else {
+                postMessage(this.user, this.inputText)
+            } 
             this.inputText = ''
         },
         added(message) {
             this.checkSender(message)
             this.messages.push(message)
+            console.log(message.id)
             this.$nextTick(() => {
                     const elm = this.$refs.container
                     window.scrollTo({
@@ -66,6 +79,16 @@ export default {
                         behavior: 'smooth' ,
                     })
             })
+        },
+        modified (message)  {
+            this.checkSender(message)
+            const index = this.messages.find((e) => e.id === message.id)
+            this.messages.splice(index, 1, message)
+        },
+        removed (id) {
+            console.log("removed" + id.toString())
+            const index = this.messages.find((e) => e.id === id)
+            this.messages.splice(index, 1)
         },
         checkSender(message) {
             if(message.uid === this.user.uid){
@@ -78,10 +101,22 @@ export default {
             if(e.keyCode === 13 && e.ctrlKey) {
                 this.submit()
             }
+        },
+        deleteMessage(id)  {
+            console.log("deleteMessage" + id.toString())
+            deleteMessage(id)
+        },
+        editMessage(id) {
+            this.isEditMode = true
+            this.editTarget = id
+            const content = this.messages.find((e) => {
+                return e.id === id
+            }).content
+            this.inputText = content
         }
     },
     created() {
-        setMessageListener(this.added)
+        setMessageListener(this.added, this.modified, this.removed)
     }
 }
 </script>

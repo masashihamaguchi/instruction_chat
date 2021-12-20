@@ -3,8 +3,27 @@
       <div class="container" :class="{container__isMine: isMine}">
           <img v-if="!isMine" class="icon" :src="icon"/>
           <div class="content">
+
+              <div v-show="showChips" class="chips"
+              @mouseover="isMouseOnChips = true"
+              @mouseleave="isMouseOnChips = false"
+              >
+                <button @click="$emit('editMessage')">
+                    <mdicon name="pencil"/>
+                </button>
+                <button @click="$emit('deleteMessage')">
+                    <mdicon name="delete"/>
+                </button>
+              </div>
             <span v-if="!isMine" class="displayName">{{displayName}}</span>
-            <div class="card" :class="{card__isMine: isMine}">{{content}}</div>
+            <div 
+                class="card" 
+                :class="{card__isMine: isMine}" 
+                @mouseover="isMouseOnCard = true"
+                @mouseleave="isMouseOnCard = false"
+            >
+                {{content}}
+            </div>
           </div>
           <div class="timestamp" :class="{timestamp__isMine: isMine}">
               <span>{{date}}</span>
@@ -16,6 +35,12 @@
 <script>
 export default {
     name: 'Messsage',
+    data() {
+        return {
+            isMouseOnChips: false,
+            isMouseOnCard: false
+        }
+    },
     props: {
         id: String,
         content: String,
@@ -27,6 +52,9 @@ export default {
     computed: {
         date(){
             return this.timestamp.toLocaleString()
+        },
+        showChips(){
+            return (this.isMouseOnChips || this.isMouseOnCard) && this.isMine
         }
     }
 }

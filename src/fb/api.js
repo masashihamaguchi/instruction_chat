@@ -13,6 +13,14 @@ const postMessage = (user, content) => {
     })
 }
 
+const deleteMessage = (id) => {
+    messagesRef.doc(id).delete()
+}
+
+const updateMessage = (id, content) => {
+    messagesRef.doc(id).update({content})
+}
+
 const formatData = (doc) => {
     const message = {
         id: doc.id,
@@ -27,7 +35,7 @@ const formatData = (doc) => {
     return message
 }
 
-const setMessageListener = (added) => {
+const setMessageListener = (added, modified, removed) => {
     messagesRef.orderBy('timestamp', 'asc').onSnapshot((querySnapshot) => {
         querySnapshot.docChanges().forEach((change) => {
             switch(change.type){
@@ -35,12 +43,14 @@ const setMessageListener = (added) => {
                     added(formatData(change.doc))
                     break
                 case 'modified':
+                    modified(formatData(change.doc))
                     break
                 case 'removed':
+                    removed(change.doc.id)
                     break
             }
         })
     })
 }
 
-export { postMessage , setMessageListener}
+export { postMessage , deleteMessage, updateMessage, setMessageListener}

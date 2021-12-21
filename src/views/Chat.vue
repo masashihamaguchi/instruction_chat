@@ -70,7 +70,6 @@ export default {
         added(message) {
             this.checkSender(message)
             this.messages.push(message)
-            console.log(message.id)
             this.$nextTick(() => {
                     const elm = this.$refs.container
                     window.scrollTo({
@@ -82,12 +81,11 @@ export default {
         },
         modified (message)  {
             this.checkSender(message)
-            const index = this.messages.find((e) => e.id === message.id)
+            const index = this.messages.findIndex((e) => e.id === message.id)
             this.messages.splice(index, 1, message)
         },
         removed (id) {
-            console.log("removed" + id.toString())
-            const index = this.messages.find((e) => e.id === id)
+            const index = this.messages.findIndex((e) => e.id === id)
             this.messages.splice(index, 1)
         },
         checkSender(message) {
@@ -103,7 +101,6 @@ export default {
             }
         },
         deleteMessage(id)  {
-            console.log("deleteMessage" + id.toString())
             deleteMessage(id)
         },
         editMessage(id) {

@@ -1,4 +1,6 @@
-# instruction_chat
+# a-rinchan messenger
+
+This project uses Vue.js.
 
 ## Project setup
 ```

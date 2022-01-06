@@ -1,4 +1,4 @@
-import firebaseConfig from './.firebaseConfig.js.js.js'
+import firebaseConfig from '/.firebaseConfig.js'
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
 import 'firebase/compat/firestore'
@@ -13,7 +13,7 @@ if (location.hostname === "localhost") {
   db.useEmulator("localhost", 8080);
 }
 
-const login = () => {
+const signin = () => {
   const provider = enabledEmulator ? new firebase.auth.GoogleAuthProvider() : firebase.app().auth.useEmulator('http://localhost:9099');
   // 他のスコープ(権限)にアクセスしたい場合 https://developers.google.com/identity/protocols/googlescopes?hl=ja
   //provider.addScope('https://www.googleapis.com/auth/contacts.readonly')
@@ -21,4 +21,4 @@ const login = () => {
   return firebase.auth().signInWithPopup(provider)
 }
 
-export { login, db, firebase }
+export { signin, db, firebase }

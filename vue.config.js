@@ -1,12 +1,21 @@
 module.exports = {
-    css: {
-        loaderOptions: {
-        sass: {
-            prependData: '@import "./src/assets/sass/prepends.sass"',
-        },
-        },
+  publicPath: '/',
+  outputDir: 'dist',
+  assetsDir: '',
+  indexPath: 'index.html',
+  filenameHashing: true,
+  pages: {
+    index: {
+      entry: 'src/main.js',
+      filename: 'index.html',
+      title: 'A-rin chan Messenger',
     },
-    outputDir: 'docs',
-    assetsDir: './',
-    publicPath: './',
+  },
+  css: {
+    loaderOptions: {
+      sass: {
+        prependData: '@import "./src/assets/sass/prepends.sass"',
+      },
+    },
+  },
 }

@@ -1,17 +1,26 @@
 {
-  "name": "instruction_chat",
+  "name": "a-rin-chan-messenger",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "dev-serve": "vue-cli-service serve --mode development",
+    "prod-serve": "vue-cli-service serve --mode producution",
     "build": "vue-cli-service build",
+    "dev-build": "vue-cli-service build --mode development",
+    "prod-build": "vue-cli-service build --mode producution",
     "lint": "vue-cli-service lint"
   },
+  "author": "Ayaka Yoshizawa <> (https://github.com/a-rinchan)",
+  "contributors": [
+    "Masashi Hamaguchi <masashi.hamaguchi@keio.jp> (https://github.com/masashihamaguchi)"
+  ],
   "dependencies": {
     "@mdi/js": "^6.5.95",
-    "core-js": "^3.20.1",
+    "core-js": "^3.20.2",
     "fb": "^2.0.0",
     "firebase": "^9.6.1",
+    "jquery": "^3.6.0",
     "mdi-vue": "^3.0.12",
     "vue": "^3.0.0"
   },
@@ -20,13 +29,13 @@
     "@vue/cli-plugin-eslint": "~4.5.15",
     "@vue/cli-service": "~4.5.15",
     "@vue/compiler-sfc": "^3.2.26",
-    "@vue/eslint-config-prettier": "^7.0.0",
+    "@vue/eslint-config-prettier": "6.0.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^8.5.0",
+    "eslint": "7.28.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.2.0",
     "prettier": "^2.5.1",
-    "sass": "^1.45.1",
+    "sass": "^1.46.0",
     "sass-loader": "^12.4.0"
   }
 }

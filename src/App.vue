@@ -1,14 +1,16 @@
 <template>
-  <div v-if="Object.keys(user).length === 0" class="login">
-    <h1>Instruction Chat</h1>
-    <button @click="login">ログイン</button>
+  <!-- Singn in -->
+  <div v-if="Object.keys(user).length === 0" class="signin">
+    <h1>A-rin chan Messenger</h1>
+    <img src='@/assets/img/google_signin.png' @click='login'/>
   </div>
+  <!-- Chat -->
   <Chat v-else :user="user"/>
 </template>
 
 <script>
-import Chat from '@/views/Chat.vue'
-import { login } from '@/fb/init.js'
+import Chat from '@/components/Chat.vue'
+import { signin } from '@/assets/js/firebase-init.js'
 
 export default {
   name: 'App',
@@ -22,82 +24,31 @@ export default {
   },
   methods: {
     async login() {
-      const result = await login()
+      const result = await signin()
       this.user = result.user
-    },
-    login2() {
-      login().then((result) => {
-        this.user = result.user
-      })
-    },
-  },
+      console.log(this.user)
+    }
+  }
 }
 </script>
 
-<style lang="sass" scoped>
-.login
-  text-align: center
-  h1
-    line-height: $header-height
-    font-size: 1.75em
-
-#app
-  font-family: Avenir, Helvetica, Arial, sans-serif
-  font-size: $root-font-size
-  -webkit-font-smoothing: antialiased
-  -moz-osx-font-smoothing: grayscale
-  text-align: center
-  color: #2c3e50
-  margin-top: 60px
-</style>
-
 <style>
-/* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
-*/
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+.signin {
+  width: 350px;
+  padding: 32px;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0px 0px 8px #3B3A39;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
+
+img {
+  width: 200px;
+  cursor: pointer;
 }
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
+
 </style>
